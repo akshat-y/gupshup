@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from fastapi.responses import JSONResponse
 import bcrypt
 from datetime import datetime, timedelta, timezone
+import uuid
 
 def hash_password(password: str) -> str:
     salt = bcrypt.gensalt()
@@ -85,12 +86,19 @@ def verify_login_details(db: Session, username: str, password: str):
     if not verify_password(password, user.password_hash):
         raise HTTPException(status_code=400, detail="Incorrect password")
 
-    # Create a session here (simple example using a cookie)
     expires_at = datetime.now(timezone.utc) + timedelta(days=1)
+    
+    # Create a session here (simple example using a cookie)
+    session_id = str(uuid.uuid4())
+    new_session = models.Session(session_id=session_id, user_id=user.id, expires_at=expires_at)
+    db.add(new_session)
+    db.commit()
+
+    
     response = JSONResponse(content={"message": "Login successful"})
     response.set_cookie(
-        key="session_token", 
-        value=user.username,
+        key="session_id", 
+        value=session_id,
         secure=True,
         samesite="None",
         expires=expires_at

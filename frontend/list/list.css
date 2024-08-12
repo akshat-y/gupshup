@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+:root{
+    --primary_color: #2222f6;
+}
+
+@keyframes spinner {
+    to { transform: rotate(360deg); }
+}
+
+body, html{
+    /* background-color: #ececec; */
+    margin: 0;
+    padding: 0;    
+    font-family: "Lato", sans-serif;
+    line-height: 1.5;  
+    font-size: 0.95rem;  
+}
+
+.btn-primary{
+    background-color: var(--primary_color) !important;
+}
+
+.font-small{
+    font-size: 0.8rem;
+}
+
+.text_primary{
+    color: var(--primary_color);
+}
+
+.container{
+    padding: 30px 50px;
+}
+
+#newProjectModal, #newTestCaseModal{
+
+    backdrop-filter: blur(5px);
+    background-color: #eeeeee84;
+
+    .modal-header{
+        border-bottom: none !important;
+    }
+
+    .modal-body{
+        input, textarea, select{
+            display: block;
+            outline: none;
+            border: solid 1px rgb(202, 202, 202);
+            border-radius: 10px;
+            background-color: #ffffff;
+            width: 100%;
+            padding: 8px 16px;
+        }
+
+        .input_label{
+            color: #626262;
+            padding-left: 5px;
+            padding-bottom: 5px;
+            font-size: small;
+        }
+
+        .btn-primary{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+
+            &:hover{
+                background-color: #0606b3 !important;
+            }
+
+            svg{
+                display: none;
+                height: 18px;
+                color: white;
+                animation: spinner 1.5s linear infinite; 
+            }
+        }
+
+        .btn-primary.loading svg{
+            display: block;
+        }
+    }
+}
+
+.nav_container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    button{
+        border: none;
+        outline: none;
+        padding: 8px 30px;
+        cursor: pointer;
+        background: transparent;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        svg{
+            height: 18px;
+        }
+    }
+    
+    button.btn_primary{
+        background-color: var(--primary_color);
+        color: white;        
+        border-radius: 10px;        
+        transition: background-color 0.3s;
+
+        svg{
+            color: whitesmoke;
+        }
+
+        &:hover{
+            background-color: #0606b3;
+        }         
+    }
+}

@@ -4,6 +4,9 @@
     --primary_color: #2222f6;
 }
 
+@keyframes spinner {
+    to { transform: rotate(360deg); }
+}
 
 body, html{
     background-color: #ececec;
@@ -15,6 +18,29 @@ body, html{
 
 .font-small{
     font-size: 0.8rem;
+}
+
+.fullscreen_loader{
+
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #ececec;
+
+    .spinner{
+        svg{
+            height: 30px;
+            animation: spinner 2s linear infinite; 
+        }        
+    }
+}
+
+.fullscreen_loader.hidden{
+    display: none;
 }
 
 .input_container{
@@ -38,10 +64,6 @@ body, html{
         outline: none;
         padding: 10px 0px 10px 10px;
     }    
-}
-
-@keyframes spinner {
-    to { transform: rotate(360deg); }
 }
 
 .container{

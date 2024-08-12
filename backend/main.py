@@ -1,11 +1,13 @@
 from typing import Optional, Union
 
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import Request, FastAPI, Depends, HTTPException, status
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from database import SessionLocal, init_db
 import schemas, controllers
 from fastapi.security import OAuth2PasswordRequestForm
+import models
 
 init_db()
 
@@ -26,6 +28,35 @@ def get_db():
     finally:
         db.close()
 
+
+@app.middleware("http")
+async def authenticate_session(request: Request, call_next):
+    session_id = request.cookies.get("session_id")
+    if session_id:
+        db: Session = next(get_db())
+        session = db.query(models.Session).filter(models.Session.session_id == session_id).first()
+        if session and session.is_active():
+            request.state.user = session.user
+        else:
+            request.state.user = None
+    else:
+        request.state.user = None
+
+    response = await call_next(request)
+    return response
+
+@app.get("/auth-check")
+def auth_check(request: Request):
+    if request.state.user is None:
+        return {"logged_in": False}
+    
+    user = request.state.user
+    return {
+        "logged_in": True,
+        "username": user.username,
+        "role": user.role
+    }
+
 @app.post("/users/", response_model=schemas.UserCreate)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = controllers.get_user_by_username(db, username=user.username)
@@ -35,6 +66,11 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 @app.post("/projects/", response_model=schemas.ProjectCreate)
 def create_project(project: schemas.ProjectCreate, db: Session = Depends(get_db)):
+    print("======", project)
+    existing_project = db.query(models.Project).filter(models.Project.name == project.name).first()
+    if existing_project:
+        return JSONResponse(content={"duplicate_project": True})
+        
     return controllers.create_project(db=db, project=project)
 
 @app.post("/testcases/", response_model=schemas.TestCaseCreate)
@@ -56,3 +92,13 @@ def delete_test_case(test_case_id: int, db: Session = Depends(get_db)):
 @app.post("/login/")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     return controllers.verify_login_details(db=db, username=form_data.username, password=form_data.password)
+
+@app.post("/logout")
+def logout(request: Request, db: Session = Depends(get_db)):
+    session_id = request.cookies.get("session_id")
+    db.query(Session).filter(Session.session_id == session_id).delete()
+    db.commit()
+
+    response = JSONResponse(content={"message": "Logged out"})
+    response.delete_cookie("session_id")
+    return response

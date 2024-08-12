@@ -1,3 +1,31 @@
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const response = await fetch('http://127.0.0.1:8000/auth-check', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            credentials: 'include',
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            if (result.logged_in)
+                window.location.href = '/list' 
+            else 
+                document.querySelector(".fullscreen_loader").classList.add("hidden")                    
+        } 
+        else
+            document.querySelector(".fullscreen_loader").classList.add("hidden")
+    } catch (error) {
+        console.error('Error checking auth status:', error)        
+        document.querySelector(".fullscreen_loader").classList.add("hidden")
+    }
+});
+
+
+
+
 document.getElementById('login_button').addEventListener('click', () => {
 
     const login_button = document.getElementById('login_button')
@@ -8,7 +36,7 @@ document.getElementById('login_button').addEventListener('click', () => {
     const password_field = document.getElementById('password_input')
 
     username_field.disabled = true
-    password_field.disables = true
+    password_field.disabled = true
 
     const username = username_field.value
     const password = password_field.value
@@ -16,7 +44,7 @@ document.getElementById('login_button').addEventListener('click', () => {
     if (!validateLoginForm(username, password)) {
         document.getElementById('login_button').classList.remove("loading")
         username_field.disabled = false
-        password_field.disables = false
+        password_field.disabled = false
         login_button.disabled = false
         return
     }
@@ -42,6 +70,7 @@ function login(username, password) {
         console.log(data);
         if (data.message === 'Login successful') {
             // Redirect or show success message
+            window.location.href = '/list' 
         }
     })
     .catch(error => {
