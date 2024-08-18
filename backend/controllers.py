@@ -1,7 +1,10 @@
-from sqlalchemy.orm import Session
+from typing import Optional
+
+from sqlalchemy.orm import Session,joinedload
+from sqlalchemy import or_
 import models
 from schemas import UserCreate, ProjectCreate, TestCaseCreate, TestCaseUpdate
-from fastapi import HTTPException
+from fastapi import HTTPException, Query
 from fastapi.responses import JSONResponse
 import bcrypt
 from datetime import datetime, timedelta, timezone
@@ -33,8 +36,11 @@ def create_project(db: Session, project: ProjectCreate):
     db.refresh(db_project)
     return db_project
 
-def get_project(db: Session, project_id: int):
-    return db.query(models.Project).filter(models.Project.id == project_id).first()
+# def get_project(db: Session, project_id: int):
+#     return db.query(models.Project).filter(models.Project.id == project_id).first()
+
+def get_projects(db: Session):
+    return db.query(models.Project).all()
 
 def create_test_case(db: Session, test_case: TestCaseCreate, user_id: int):
     db_test_case = models.TestCase(
@@ -53,13 +59,50 @@ def create_test_case(db: Session, test_case: TestCaseCreate, user_id: int):
     db.refresh(db_test_case)
     return db_test_case
 
-def get_test_cases(db: Session, user_id: int = None):
-    if user_id:
-        return db.query(models.TestCase).filter(models.TestCase.user_id == user_id).all()
-    return db.query(models.TestCase).all()
+def get_test_cases(db: Session, user: models.User, skip: int, limit: int, search: Optional[str] = Query(None)):
 
-def update_test_case(db: Session, test_case_id: int, test_case: TestCaseUpdate):
-    db_test_case = db.query(models.TestCase).filter(models.TestCase.id == test_case_id).first()
+    query = db.query(models.TestCase).options(
+        joinedload(models.TestCase.project),
+        joinedload(models.TestCase.owner)
+    )
+    
+    if search:
+        query = query.filter(
+            or_(
+                models.TestCase.test_case_name.contains(search),
+                models.TestCase.description.contains(search)            
+            )
+        )
+
+    if user.role == 'tester':
+        query = query.filter(models.TestCase.user_id == user.id)
+    
+    test_cases = query.offset(skip).limit(limit).all()
+
+    return [
+        {
+            "id": test_case.id,
+            "project_id": test_case.project_id,
+            "user_id": test_case.user_id,
+            "test_case_name": test_case.test_case_name,
+            "type": test_case.type,
+            "description": test_case.description,
+            "input_data": test_case.input_data,
+            "expected_result": test_case.expected_result,
+            "actual_result": test_case.actual_result,
+            "status": test_case.status,
+            "project_name": test_case.project.name,
+            "username": test_case.owner.username
+        }
+        for test_case in test_cases
+    ]
+
+def update_test_case(db: Session, test_case: TestCaseUpdate, user: models.User):
+    if user.role == 'admin':
+        db_test_case = db.query(models.TestCase).filter(models.TestCase.id == test_case.id).first()
+    else:
+        db_test_case = db.query(models.TestCase).filter(models.TestCase.id == test_case.id, models.TestCase.user_id == user.id).first()
+    
     if db_test_case:
         db_test_case.test_case_name = test_case.test_case_name
         db_test_case.type = test_case.type
@@ -72,8 +115,12 @@ def update_test_case(db: Session, test_case_id: int, test_case: TestCaseUpdate):
         db.refresh(db_test_case)
     return db_test_case
 
-def delete_test_case(db: Session, test_case_id: int):
-    db_test_case = db.query(models.TestCase).filter(models.TestCase.id == test_case_id).first()
+def delete_test_case(db: Session, test_case_id: int, user: models.User):
+    if user.role == 'admin':
+        db_test_case = db.query(models.TestCase).filter(models.TestCase.id == test_case_id).first()
+    else:
+        db_test_case = db.query(models.TestCase).filter(models.TestCase.id == test_case_id, models.TestCase.user_id == user.id).first()
+    
     if db_test_case:
         db.delete(db_test_case)
         db.commit()

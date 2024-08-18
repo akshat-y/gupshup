@@ -30,10 +30,11 @@ body, html{
 }
 
 .container{
-    padding: 30px 50px;
+    /* padding: 30px 50px; */
+    margin-top: 60px;
 }
 
-#newProjectModal, #newTestCaseModal{
+#newProjectModal, #newTestCaseModal, #deleteTestCaseModal, #editTestCaseModal{
 
     backdrop-filter: blur(5px);
     background-color: #eeeeee84;
@@ -119,5 +120,46 @@ body, html{
         &:hover{
             background-color: #0606b3;
         }         
+    }
+}
+
+.test_case_actions{
+    svg{
+        padding: 5px;
+        cursor: pointer;        
+    }
+
+    svg.edit_btn:hover{
+        color: #0c7399;
+    }
+    svg.delete_btn:hover{
+        color: red;
+    }
+}
+
+.nowrap{
+    white-space: nowrap;
+}
+
+.dt-search{
+    label{
+        display: none !important;
+    }
+
+    input{
+        outline: none !important;
+        border: solid 1px rgb(#cacaca) !important;
+        border-radius: 10px !important;
+        background-color: #ffffff !important;
+        width: 100% !important;
+        padding: 6px 12px !important;
+    }
+}
+
+#logout_button{
+    cursor: pointer;
+
+    &:hover{
+        color: red;
     }
 }

@@ -29,4 +29,4 @@ class TestCaseCreate(TestCaseBase):
     pass
 
 class TestCaseUpdate(TestCaseBase):
-    pass
+    id: int

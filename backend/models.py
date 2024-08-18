@@ -58,23 +58,14 @@ class TestCase(Base):
 
 
 
-
-
 # import requests
 
-# # URL of the API endpoint
 # url = "http://127.0.0.1:8000/users/"
 
-# # User data to be sent in the request body
 # user_data = {
 #     "username": "akshat-yadav",    
 #     "password": "akshatpassword",
 #     "role": "tester"
 # }
 
-# # Make the POST request to create a user
 # response = requests.post(url, json=user_data)
-
-# # Print the response from the API
-# print(response.status_code)
-# print(response.json())
