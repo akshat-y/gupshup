@@ -5,7 +5,7 @@
 
     async function authenticateUser(){
         try {
-            const response = await fetch('http://127.0.0.1:8000/auth-check', {
+            const response = await fetch(`${window.api_link}/auth-check`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -38,11 +38,12 @@
             processing: false,
             scrollX: true,
             serverSide: false,
+            pageLength: 5,
             language: {
                 searchPlaceholder: "Search..."
             },
             ajax: {
-                url: "http://127.0.0.1:8000/testcases",
+                url: `${window.api_link}/testcases`,
                 type: "GET",
                 xhrFields: {
                         withCredentials: true
@@ -99,7 +100,7 @@
         // getTestCases()
 
         $('#logout_button').on('click', function(){            
-            fetch('http://127.0.0.1:8000/logout', {
+            fetch(`${window.api_link}/logout`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -186,7 +187,7 @@
                     return
                 }                            
 
-                fetch('http://127.0.0.1:8000/testcases', {
+                fetch(`${window.api_link}/testcases`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -215,7 +216,7 @@
     })
     
     async function getProjects(){
-        const response = await fetch('http://127.0.0.1:8000/projects', {
+        const response = await fetch(`${window.api_link}/projects`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -233,7 +234,7 @@
     }
 
     async function getTestCases(){
-        const response = await fetch('http://127.0.0.1:8000/testcases', {
+        const response = await fetch(`${window.api_link}/testcases`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -293,7 +294,7 @@
     
         const new_test_case_btn = document.getElementById('new_test_case_btn')        
 
-        fetch('http://127.0.0.1:8000/testcases', {
+        fetch(`${window.api_link}/testcases`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -362,7 +363,7 @@
     function createProject(project_name, jira_id) {
     
         const new_project_btn = document.getElementById('new_project_btn')
-        fetch('http://127.0.0.1:8000/projects', {
+        fetch(`${window.api_link}/projects`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -408,7 +409,7 @@
         $('#deleteTestCaseModal').unbind().on('click', '#delete_test_case', ()=>{
             console.log('Removing test case id -', test_case_id)
             $('#deleteTestCaseModal').modal('hide');
-            fetch(`http://127.0.0.1:8000/testcases/${test_case_id}`, {
+            fetch(`${window.api_link}/testcases/${test_case_id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        const response = await fetch('http://127.0.0.1:8000/auth-check', {
+        const response = await fetch(`${window.api_link}/auth-check`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -54,7 +54,7 @@ document.getElementById('login_button').addEventListener('click', () => {
 
 function login(username, password) {
     console.log("trying to login")
-    fetch('http://127.0.0.1:8000/login', {
+    fetch(`${window.api_link}/login`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
