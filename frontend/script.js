@@ -67,14 +67,34 @@ function login(username, password) {
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data);
         if (data.message === 'Login successful') {
-            // Redirect or show success message
             window.location.href = '/list' 
+        }
+        else{
+            const error_field = document.getElementById('form_error_info')
+            error_field.classList.add("visible")
+            error_field.textContent = data.detail || "Failed to login"
+
+            const login_button = document.getElementById('login_button')
+            login_button.classList.remove("loading")
+            login_button.disabled = false
+
+            document.getElementById('username_input').disabled = false
+            document.getElementById('password_input').disabled = false           
         }
     })
     .catch(error => {
-        console.log("Failed -- ", error);        
+        console.log("Failed -- ", error); 
+        const error_field = document.getElementById('form_error_info')
+        error_field.classList.add("visible")
+        error_field.textContent = data.detail || "Failed to login"
+
+        const login_button = document.getElementById('login_button')
+        login_button.classList.remove("loading")
+        login_button.disabled = false
+
+        document.getElementById('username_input').disabled = false
+        document.getElementById('password_input').disabled = false        
     })
 }
 

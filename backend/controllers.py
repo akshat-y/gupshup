@@ -59,27 +59,29 @@ def create_test_case(db: Session, test_case: TestCaseCreate, user_id: int):
     db.refresh(db_test_case)
     return db_test_case
 
-def get_test_cases(db: Session, user: models.User, skip: int, limit: int, search: Optional[str] = Query(None)):
+def get_test_cases(db: Session, user: models.User, draw: int, skip: int, limit: int, search: Optional[str] = Query(None)):
 
     query = db.query(models.TestCase).options(
         joinedload(models.TestCase.project),
         joinedload(models.TestCase.owner)
-    )
+    ).join(models.User, models.TestCase.user_id == models.User.id)
     
     if search:
         query = query.filter(
             or_(
                 models.TestCase.test_case_name.contains(search),
-                models.TestCase.description.contains(search)            
+                models.TestCase.description.contains(search),
+                models.User.username.contains(search)
             )
         )
 
     if user.role == 'tester':
         query = query.filter(models.TestCase.user_id == user.id)
     
-    test_cases = query.offset(skip).limit(limit).all()
+    records_total = query.count()
+    test_cases = query.offset(skip).limit(limit).all()    
 
-    return [
+    data_list = [
         {
             "id": test_case.id,
             "project_id": test_case.project_id,
@@ -96,6 +98,13 @@ def get_test_cases(db: Session, user: models.User, skip: int, limit: int, search
         }
         for test_case in test_cases
     ]
+
+    return {
+        "draw": draw,
+        "recordsTotal": records_total,
+        "recordsFiltered": records_total,
+        "data": data_list
+    }
 
 def update_test_case(db: Session, test_case: TestCaseUpdate, user: models.User):
     if user.role == 'admin':

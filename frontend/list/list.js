@@ -35,24 +35,27 @@
         await authenticateUser()
         
         testCaseDatatable = new DataTable('#test_case_datatable', {
-            processing: false,
+            processing: true,
             scrollX: true,
-            serverSide: false,
+            serverSide: true,
             pageLength: 5,
             language: {
                 searchPlaceholder: "Search..."
             },
             ajax: {
-                url: `${window.api_link}/testcases`,
-                type: "GET",
+                url: `${window.api_link}/get_testcases`,
+                type: "POST",
                 xhrFields: {
-                        withCredentials: true
+                    withCredentials: true
                 },
                 beforeSend: function (xhr) {
-                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                },                
+                    xhr.setRequestHeader('Content-Type', 'application/json');
+                },         
+                data: function(d) {
+                    return JSON.stringify(d);
+                },       
                 dataSrc: function(json) {
-                    return json;
+                    return json.data;
                 }
             },
             columns: [

@@ -88,14 +88,20 @@ def create_test_case(test_case: schemas.TestCaseCreate, request: Request, db: Se
 
     return JSONResponse(content={"message": "Authentication Failed, Action Not Allowed"})
 
-@app.get("/testcases/")
-def read_test_cases(request: Request, skip: int = 0, limit: int = 10, search: Optional[str] = Query(None), db: Session = Depends(get_db)):
+@app.post("/get_testcases/")
+async def read_test_cases(request: Request, db: Session = Depends(get_db)):
+
+    data = await request.json()
+    draw = data.get('draw', 1)
+    skip = data.get('start', 0)
+    limit = data.get('length', 10)
+    search = data.get('search', {}).get('value', '')
 
     session_id = request.cookies.get("session_id")
     if session_id:        
         session = db.query(models.Session).filter(models.Session.session_id == session_id).first()
         if session and session.is_active():
-            return controllers.get_test_cases(skip=skip, limit=limit, search=search, db=db, user=session.user)
+            return controllers.get_test_cases(skip=skip, limit=limit, search=search, draw=draw, db=db, user=session.user)
 
     raise HTTPException(status_code=401, detail="Authentication Failed")
 
