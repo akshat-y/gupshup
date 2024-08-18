@@ -163,3 +163,21 @@ body, html{
         color: red;
     }
 }
+
+.dt-paging-button.current, .dt-paging-button:hover{
+    background-color: #eaeaea !important;
+    border-color: transparent !important;
+    border-radius: 50% !important;
+}
+
+.dt-column-order{
+    width: auto !important;
+}
+
+.dt-column-order::before{
+    font-size: 0.5em !important;
+}
+
+.dt-column-order::after{
+    font-size: 0.5em !important;
+}
