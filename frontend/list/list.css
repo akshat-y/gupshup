@@ -15,6 +15,7 @@ body, html{
     font-family: "Lato", sans-serif;
     line-height: 1.5;  
     font-size: 0.95rem;  
+    background-color: #f1f1f1;
 }
 
 .btn-primary{
@@ -91,13 +92,24 @@ body, html{
     align-items: center;
     justify-content: space-between;
 
+    #customSearch{
+        background-color: white;
+        border: none;
+        outline: none;
+        padding: 8px;
+        font-size: small;
+        border-radius: 10px;        
+    }
+
     button{
         border: none;
         outline: none;
-        padding: 8px 30px;
+        font-size: small;
+        padding: 8px 20px;
         cursor: pointer;
-        background: transparent;
+        background-color: white;
         display: inline-flex;
+        border-radius: 10px;        
         justify-content: center;
         align-items: center;
         gap: 10px;
@@ -109,8 +121,7 @@ body, html{
     
     button.btn_primary{
         background-color: var(--primary_color);
-        color: white;        
-        border-radius: 10px;        
+        color: white;                
         transition: background-color 0.3s;
 
         svg{
@@ -158,16 +169,29 @@ body, html{
 
 #logout_button{
     cursor: pointer;
+    height: 18px;
+    margin-left: 20px;
 
     &:hover{
         color: red;
     }
 }
 
-.dt-paging-button.current, .dt-paging-button:hover{
-    background-color: #eaeaea !important;
+.dt-paging-button:hover{
+    background: var(--primary_color) !important;
+    border-radius: 15px !important;
+    border-color: transparent !important;    
+}
+
+.dt-paging-button.disabled:hover{
+    background: #878787 !important;
+}
+
+.dt-paging-button.current{    
+    color: rgb(152, 28, 28) !important;
+    background: #eaeaea !important;
     border-color: transparent !important;
-    border-radius: 50% !important;
+    border-radius: 15px !important;    
 }
 
 .dt-column-order{
@@ -180,4 +204,50 @@ body, html{
 
 .dt-column-order::after{
     font-size: 0.5em !important;
+}
+
+.dt-scroll-body{
+    border-bottom: solid 1px #dbdbdd !important;
+}
+
+#datatable_container{
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 5px;
+
+    th{
+        font-weight: normal !important;
+        font-size: small !important;
+        color: #626262;
+        border-bottom-color:#dbdbdd;
+
+        &:hover{
+            outline: none !important;
+        }
+    }
+}
+
+#test_case_datatable{
+    border-collapse: separate !important; 
+    border-spacing: 0 10px !important;    
+}
+
+#test_case_datatable tr{
+    /* margin: 10px 0 !important; */
+    /* background-color: #ffffff; */
+}
+
+#user_avatar{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #deb887d5;
+    color: black;
+    font-weight: bold;
+    font-size: larger;
+    line-height: 0;
+}
+
+#user_name_label{
+    /* font-size: ; */
 }

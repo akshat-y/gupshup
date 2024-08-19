@@ -15,8 +15,13 @@
     
             if (response.ok) {
                 const result = await response.json();
-                if (result.logged_in)
+                console.log(result, '000000');
+                
+                if (result.logged_in){
                     document.getElementById('user_name_label').textContent = result.username
+                    document.getElementById('user_role_label').textContent = result.role
+                    document.getElementById('user_avatar').textContent = result.username.substring(0, 2)
+                }                    
                 else
                     window.location.href = '/' 
             } 
@@ -62,11 +67,11 @@
                 { "data": "id" },
                 {"data": "username", "className": "nowrap"},
                 {"data": "project_name", "className": "nowrap"},
-                {"data": "test_case_name"},
-                {"data": "type"},
-                {"data": "input_data"},
-                {"data": "expected_result"},
-                {"data": "actual_result"},
+                {"data": "test_case_name", "className": "nowrap"},
+                {"data": "type", "className": "nowrap"},
+                {"data": "input_data", "className": "nowrap"},
+                {"data": "expected_result", "className": "nowrap"},
+                {"data": "actual_result", "className": "nowrap"},
                 {"data": "status"},
                 {"data": "description"},
                 {
@@ -93,7 +98,7 @@
             ],
             layout: {
                 topStart: null,
-                topEnd: 'search',
+                topEnd: null,
                 bottomStart: 'info',
                 bottomEnd: 'paging'
             }
@@ -215,6 +220,10 @@
             })
         })        
         
+        document.getElementById('customSearch').addEventListener('keyup', debounce(function() {
+            var searchTerm = this.value.toLowerCase();
+            testCaseDatatable.search(searchTerm).draw();
+        }, 300));
 
     })
     
@@ -430,5 +439,15 @@
                 $('#deleteTestCaseModal').modal('hide'); 
             })
         })
+    }
+    
+    function debounce(func, delay) {
+        let debounceTimer;
+        return function() {
+            const context = this;
+            const args = arguments;
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => func.apply(context, args), delay);
+        };
     }
 })()

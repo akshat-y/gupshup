@@ -14,8 +14,7 @@
     <script src="https://cdn.datatables.net/2.1.3/js/dataTables.js"></script>    
     
 </head>
-<body>
-
+<body>   
 
     <div class="modal fade" id="newProjectModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
@@ -218,37 +217,47 @@
                 </div>
             </div>
         </div>
-    </div>
-
+    </div>    
 
     <div class="container">
 
-        <div class="nav_container mt-4 mb-4">
-            <div class="d-flex align-items-center gap-3">
-                <h2><span class="text_primary">Hello</span> <span id="user_name_label"></span></h2>
+        <div class="d-flex justify-content-between mb-5">
+            <h3 class=""><strong>Test Cases</strong></h3>
+            <div class="d-flex align-items-center gap-2">
+                
+                <div id="user_avatar" class="d-flex justify-content-center align-items-center"></div>
+                <div class="d-flex flex-column">
+                    <span id="user_name_label"></span>
+                    <span id="user_role_label" class="font-small"></span>
+                </div>
+                
                 <svg id="logout_button" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Logout" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
                     <path d="M15 17.625C14.9264 19.4769 13.3831 21.0494 11.3156 20.9988C10.8346 20.987 10.2401 20.8194 9.05112 20.484C6.18961 19.6768 3.70555 18.3203 3.10956 15.2815C3 14.723 3 14.0944 3 12.8373L3 11.1627C3 9.90561 3 9.27705 3.10956 8.71846C3.70555 5.67965 6.18961 4.32316 9.05112 3.51603C10.2401 3.18064 10.8346 3.01295 11.3156 3.00119C13.3831 2.95061 14.9264 4.52307 15 6.37501" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
                     <path d="M21 12H10M21 12C21 11.2998 19.0057 9.99153 18.5 9.5M21 12C21 12.7002 19.0057 14.0085 18.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </div>
-            <div class="action_items">
-                <button class="btn_link" data-bs-toggle="modal" data-bs-target="#newProjectModal">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" color="#000000" fill="none">
-                        <path d="M13 21H12C7.28595 21 4.92893 21 3.46447 19.5355C2 18.0711 2 15.714 2 11V7.94427C2 6.1278 2 5.21956 2.38032 4.53806C2.65142 4.05227 3.05227 3.65142 3.53806 3.38032C4.21956 3 5.1278 3 6.94427 3C8.10802 3 8.6899 3 9.19926 3.19101C10.3622 3.62712 10.8418 4.68358 11.3666 5.73313L12 7M8 7H16.75C18.8567 7 19.91 7 20.6667 7.50559C20.9943 7.72447 21.2755 8.00572 21.4944 8.33329C21.9796 9.05942 21.9992 10.0588 22 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                        <path d="M18 13V21M22 17H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    New Project
-                </button>
+        </div>
+
+        <div class="nav_container mt-4 mb-4">                        
+            <div class="action_items">                
                 <button class="btn_primary" data-bs-toggle="modal" data-bs-target="#newTestCaseModal">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" color="#000000" fill="none">
                         <path d="M12 4V20M20 12H4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                     New Test Case
                 </button>
+                <button class="ms-2" data-bs-toggle="modal" data-bs-target="#newProjectModal">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" color="#000000" fill="none">
+                        <path d="M13 21H12C7.28595 21 4.92893 21 3.46447 19.5355C2 18.0711 2 15.714 2 11V7.94427C2 6.1278 2 5.21956 2.38032 4.53806C2.65142 4.05227 3.05227 3.65142 3.53806 3.38032C4.21956 3 5.1278 3 6.94427 3C8.10802 3 8.6899 3 9.19926 3.19101C10.3622 3.62712 10.8418 4.68358 11.3666 5.73313L12 7M8 7H16.75C18.8567 7 19.91 7 20.6667 7.50559C20.9943 7.72447 21.2755 8.00572 21.4944 8.33329C21.9796 9.05942 21.9992 10.0588 22 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M18 13V21M22 17H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    New Project
+                </button>
             </div>
+            <input type="text" id="customSearch" placeholder="Search...">
         </div>
         
-        <div>
+        <div id="datatable_container">
 
             <table id="test_case_datatable" class="hover" style="width:100%">
                 <thead>

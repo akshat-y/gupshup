@@ -1,7 +1,7 @@
-from typing import Optional
+from typing import List, Optional
 
 from sqlalchemy.orm import Session,joinedload
-from sqlalchemy import or_
+from sqlalchemy import or_, asc, desc
 import models
 from schemas import UserCreate, ProjectCreate, TestCaseCreate, TestCaseUpdate
 from fastapi import HTTPException, Query
@@ -59,24 +59,48 @@ def create_test_case(db: Session, test_case: TestCaseCreate, user_id: int):
     db.refresh(db_test_case)
     return db_test_case
 
-def get_test_cases(db: Session, user: models.User, draw: int, skip: int, limit: int, search: Optional[str] = Query(None)):
+def get_test_cases(db: Session, user: models.User, draw: int, skip: int, limit: int, search: Optional[str] = Query(None), order: Optional[List[dict]] = Query(None), columns: Optional[List[dict]] = Query(None)):
 
     query = db.query(models.TestCase).options(
         joinedload(models.TestCase.project),
         joinedload(models.TestCase.owner)
-    ).join(models.User, models.TestCase.user_id == models.User.id)
+    ).join(models.User, models.TestCase.user_id == models.User.id
+    ).join(models.Project, models.TestCase.project_id == models.Project.id)
     
     if search:
         query = query.filter(
             or_(
                 models.TestCase.test_case_name.contains(search),
                 models.TestCase.description.contains(search),
-                models.User.username.contains(search)
+                models.User.username.contains(search),
+                models.Project.name.contains(search)
             )
         )
 
     if user.role == 'tester':
         query = query.filter(models.TestCase.user_id == user.id)
+
+    if order and columns:
+        for sort_order in order:
+            column_idx = sort_order["column"]
+            sort_dir = sort_order["dir"]
+
+            column_name = columns[column_idx]["data"]
+
+            # Sorting logic for joined table columns
+            if column_name == "username":
+                sort_column = models.User.username
+            elif column_name == "project_name":
+                sort_column = models.Project.name
+            elif hasattr(models.TestCase, column_name):
+                sort_column = getattr(models.TestCase, column_name)
+            else:
+                continue  # Skip if the column is not recognized
+
+            if sort_dir == "asc":
+                query = query.order_by(asc(sort_column))
+            else:
+                query = query.order_by(desc(sort_column))
     
     records_total = query.count()
     test_cases = query.offset(skip).limit(limit).all()    

@@ -96,12 +96,14 @@ async def read_test_cases(request: Request, db: Session = Depends(get_db)):
     skip = data.get('start', 0)
     limit = data.get('length', 10)
     search = data.get('search', {}).get('value', '')
+    order = data.get('order', [])
+    columns = data.get('columns', [])
 
     session_id = request.cookies.get("session_id")
     if session_id:        
         session = db.query(models.Session).filter(models.Session.session_id == session_id).first()
         if session and session.is_active():
-            return controllers.get_test_cases(skip=skip, limit=limit, search=search, draw=draw, db=db, user=session.user)
+            return controllers.get_test_cases(skip=skip, limit=limit, search=search, draw=draw, order=order, columns=columns, db=db, user=session.user)
 
     raise HTTPException(status_code=401, detail="Authentication Failed")
 
