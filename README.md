@@ -42,3 +42,9 @@ The list of available users can be found in `backend/config.py` file
 | akshat-yadav | akshatpassword | tester
 | test-user | testpassword | tester
 | admin | adminpassword | admin
+
+
+### Extra Features
+1) Session Based Login
+2) Password encryption
+3) Indexes on table
