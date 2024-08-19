@@ -51,3 +51,4 @@ The list of available users can be found in `backend/config.py` file
 4) Indexes on table
 5) Advanced search to enable search by Porject Name, Created By, Status and other test case fields
 6) Authentication on API calls for delete and edit for additional security
+7) Loosely coupled code , dependency injection
