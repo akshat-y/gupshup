@@ -20,14 +20,18 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" >New Project</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <span>New Project</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">                        
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div>
-                        <input type="text" class="mb-3" placeholder="Project Name*" id="project_name_input">
-                        <input type="text" class="mb-3" placeholder="Jira Ticket ID*" id="jira_id_input">
-                        <span class="text-danger" id="new_project_error_info"></span>
+                        <span class="input_label">Project</span>
+                        <input type="text" class="mb-3" id="project_name_input">
+
+                        <span class="input_label">Jira Ticket ID</span>
+                        <input type="text" class="mb-3" id="jira_id_input">
+                        <span class="text-danger font-small" id="new_project_error_info"></span>
                     </div>
                     <div class="d-flex flex-row-reverse">
                         <button type="button" id="new_project_btn" class="btn btn-primary">
@@ -47,7 +51,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" >New Test Case</h1>
+                    <span>New Test Case</span>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -105,7 +109,7 @@
                                 </div>
                             </div>
                                                                                                                             
-                            <span class="text-danger" id="new_test_case_error_info"></span>
+                            <span class="text-danger font-small" id="new_test_case_error_info"></span>
                         </div>
                         <div class="d-flex flex-row-reverse mt-4">
                             <button type="submit" id="new_test_case_btn" class="btn btn-primary">
@@ -126,7 +130,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" >Edit Test Case</h1>
+                    <span>Test Case</span>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -184,7 +188,7 @@
                                 </div>
                             </div>
                                                                                                                             
-                            <span class="text-danger" id="edit_test_case_error_info"></span>
+                            <span class="text-danger font-small" id="edit_test_case_error_info"></span>
                         </div>
                         <div class="d-flex flex-row-reverse mt-4">
                             <button type="submit" id="edit_test_case_btn" class="btn btn-primary">

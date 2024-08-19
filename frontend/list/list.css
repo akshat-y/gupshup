@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 
 :root{
-    --primary_color: #2222f6;
+    --primary_color: #2591ee;
+    --primary_color_hover: #0381ef;
 }
 
 @keyframes spinner {
@@ -11,7 +12,8 @@
 body, html{
     /* background-color: #ececec; */
     margin: 0;
-    padding: 0;    
+    padding: 0; 
+    padding-bottom: 50px;   
     font-family: "Lato", sans-serif;
     line-height: 1.5;  
     font-size: 0.95rem;  
@@ -42,24 +44,37 @@ body, html{
 
     .modal-header{
         border-bottom: none !important;
+        button{
+            font-size: smaller;            
+        }
+        
+        span{
+            font-size: larger;
+            font-weight: bold;
+        }
     }
 
     .modal-body{
         input, textarea, select{
             display: block;
             outline: none;
-            border: solid 1px rgb(202, 202, 202);
+            border: none;
             border-radius: 10px;
-            background-color: #ffffff;
+            background-color: #f1f1f1;
             width: 100%;
-            padding: 8px 16px;
+            padding: 6px 16px;
         }
 
         .input_label{
             color: #626262;
             padding-left: 5px;
-            padding-bottom: 5px;
+            padding-bottom: 8px;
             font-size: small;
+        }
+
+        button{
+            border: none !important;
+            /* margin-top: 20px; */
         }
 
         .btn-primary{
@@ -69,7 +84,7 @@ body, html{
             gap: 10px;
 
             &:hover{
-                background-color: #0606b3 !important;
+                background-color: var(--primary_color_hover) !important;
             }
 
             svg{
@@ -98,7 +113,8 @@ body, html{
         outline: none;
         padding: 8px;
         font-size: small;
-        border-radius: 10px;        
+        border-radius: 10px;  
+        min-width: 200px;      
     }
 
     button{
@@ -129,7 +145,7 @@ body, html{
         }
 
         &:hover{
-            background-color: #0606b3;
+            background-color: var(--primary_color_hover);
         }         
     }
 }
@@ -250,4 +266,8 @@ body, html{
 
 #user_name_label{
     /* font-size: ; */
+}
+
+.modal-content{
+    border: none;
 }
