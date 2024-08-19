@@ -46,5 +46,6 @@ The list of available users can be found in `backend/config.py` file
 
 ### Extra Features
 1) Session Based Login
-2) Password encryption
-3) Indexes on table
+2) Automatic logout when session expires 
+3) Password encryption
+4) Indexes on table
