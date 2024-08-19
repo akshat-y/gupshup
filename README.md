@@ -49,3 +49,4 @@ The list of available users can be found in `backend/config.py` file
 2) Automatic logout when session expires 
 3) Password encryption
 4) Indexes on table
+5) Advanced search to enable search by Porject Name, Created By, Status and other test case fields
